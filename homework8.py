@@ -94,20 +94,48 @@ def search_contact():
             if search in contact_lst[i_choice]:
                #print(contact_lst)
                print()
-               print(contact_str)
-    
+               #print(contact_str)
+               return contact_str
+
+def change_contact():
+    contact_for_change_str = search_contact()
+    print(contact_for_change_str)
+    data_str = read_file()
+    if contact_for_change_str not in data_str:
+        print('Нет такого контакта')
+    else:
+        print('Введите новый контакт')
+        new_contact_str = input_contact()
+        data_str = data_str.replace(contact_for_change_str, new_contact_str)
+        with open('Phonebook.txt', 'w', encoding ='utf-8') as data:
+            data.write(data_str)
+
+def dell_contact():
+    contact_for_change_str = search_contact()
+    print(contact_for_change_str)
+    data_str = read_file()
+    if contact_for_change_str not in data_str:
+        print('Нет такого контакта')
+    else:
+        data_str = data_str.replace(contact_for_change_str + '\n\n', '')
+        with open('Phonebook.txt', 'w', encoding ='utf-8') as data:
+            data.write(data_str)
+        print('Контакт удалён')                  
+
 def user_interface():
     with open('Phonebook.txt', 'a', encoding ='utf-8'): # создали файл, если его нет
         pass
     cmd = None
-    while cmd != '4':
+    while cmd != '6':
         print('Меню: \n'
             '1. Запись контакта \n'
             '2. Вывести данные на экран \n'
             '3. Поиск контакта \n'
-            '4. Выход')
+            '4. Изменить контакт \n'
+            '5. Удалить контакт \n'
+            '6. Выход')
         cmd = input('Введите номер операции: ')
-        while cmd not in ('1', '2', '3', '4'):
+        while cmd not in ('1', '2', '3', '4', '5', '6'):
             print('Некорректный ввод')
             cmd = input('Введите номер операции: ')
         match cmd:
@@ -118,6 +146,9 @@ def user_interface():
             case '3':
                 search_contact()
             case '4':
+                change_contact()
+            case '5':
+                dell_contact()
+            case '6':
                 print('До свидания')
-       
 user_interface()
